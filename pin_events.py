@@ -1,8 +1,7 @@
 from gpiozero import Button
 from signal import pause
 
-GPIO_PLAY = Button(3)
-GPIO_PLAY.held_time = 2
+GPIO_PLAY = Button(3, held_time=2)
 GPIO_UP = Button(5)
 GPIO_DOWN = Button(7)
 
