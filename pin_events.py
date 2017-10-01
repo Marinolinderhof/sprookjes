@@ -36,7 +36,7 @@ holds = {
 def wait_for_events():
     while True:
         for button, event in presses.items():
-            button.when_released = event
+            button.when_pressed = event
         for button, event in holds.items():
             button.when_held = event
         pause()
