@@ -1,11 +1,11 @@
 from mpd import MPDClient
 
 
-class Soundmanager(object):
+class SoundManager(object):
 
     def __init__(self):
         self.client = MPDClient()
         self.client.connect("localhost", 6600)
 
     def status(self):
-        self.client.status()
+        return self.client.status()
