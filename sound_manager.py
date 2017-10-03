@@ -9,7 +9,8 @@ class SoundManager(object):
         self.client.setvol(50)
         self.client.single(1)
         self.client.add('/home/pi/sprookjes/music/Life Lessons with Mister T.mp3')
-
+        self.client.play()
+        
     def status(self):
         return self.client.status()
     
