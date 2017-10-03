@@ -34,6 +34,7 @@ holds = {
 
 
 def wait_for_events():
+    print("starting")
     while True:
         for button, event in presses.items():
             button.when_pressed = event
