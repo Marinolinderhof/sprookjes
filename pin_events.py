@@ -37,8 +37,9 @@ holds = {
 def wait_for_events():
     print("starting")
     mine = SoundManager()
+
     print (mine.status())
-    print("ss")
+    print("s--s")
 
     while True:
         for button, event in presses.items():
