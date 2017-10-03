@@ -36,8 +36,7 @@ holds = {
 
 def wait_for_events():
     print("starting")
-    print (SoundManager.status)
-    print(sm)
+    print (SoundManager.status())
     print("ss")
 
     while True:
