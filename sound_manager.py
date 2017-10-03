@@ -1,6 +1,5 @@
 from mpd import MPDClient
 
-
 class SoundManager(object):
 
     def __init__(self):

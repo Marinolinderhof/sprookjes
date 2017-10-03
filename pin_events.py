@@ -1,5 +1,6 @@
 from gpiozero import Button
 from signal import pause
+from sound_manager import SoundManager
 
 GPIO_PLAY = Button(3)
 GPIO_UP = Button(5)
@@ -35,6 +36,9 @@ holds = {
 
 def wait_for_events():
     print("starting")
+    def sm = SoundManager
+
+
     while True:
         for button, event in presses.items():
             button.when_pressed = event
