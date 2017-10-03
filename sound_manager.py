@@ -8,7 +8,10 @@ class SoundManager(object):
         self.client.random(1)
         self.client.setvol(50)
         self.client.single(1)
-        id = self.client.addid('music/t.mp3')
+        print('current playlist')
+        print(self.client.playlist())
+        print('add default playlist')
+        self.client.id('music/t.mp3')
         print(id)
         # self.client.play()
 
