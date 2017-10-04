@@ -38,8 +38,8 @@ def wait_for_events():
     print("starting")
     mine = SoundManager()
 
+    print('status:')
     print (mine.status())
-    print("s--s")
 
     while True:
         for button, event in presses.items():

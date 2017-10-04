@@ -10,8 +10,10 @@ class SoundManager(object):
         self.client.single(1)
         print('current playlist')
         print(self.client.playlist())
-        print('add default playlist')
+        # print('add song playlist')
         # self.client.add('music/t.mp3')
+        self.client.add(choice(client.list('music/t.mp3')))
+
 
         # self.client.play()
 
