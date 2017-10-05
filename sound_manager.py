@@ -12,7 +12,7 @@ class SoundManager(object):
         print(self.client.playlist())
         # print('add song playlist')
         # self.client.add('music/t.mp3')
-        self.client.add(('./music/'))
+        self.client.listall('./music/')
 
 
         # self.client.play()
