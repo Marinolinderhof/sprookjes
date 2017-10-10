@@ -1,25 +1,17 @@
 from mpd import MPDClient
 
+
 class SoundManager(object):
 
-    def __init__(self):
+    def __init__(self, directory, host="localhost"):
         self.client = MPDClient()
-        self.client.connect("localhost", 6600)
+        self.client.connect(host, 6600)
         self.client.random(1)
-        self.client.setvol(50)
         self.client.single(1)
-        print('current playlist')
-        print(self.client.playlist())
-        # print('add song playlist')
-        # self.client.add('music/t.mp3')
-        self.client.playlistadd('t', './music/' )
-
-
-        # self.client.play()
 
     def status(self):
         return self.client.status()
-    
+
     def pause(self):
         self.client.pause()
 
@@ -28,4 +20,9 @@ class SoundManager(object):
 
     def nextRandomSong(self):
         self.client.next()
-    
+
+    def disconnect(self):
+        self.client.disconnect()
+
+    def __del__(self):
+        self.disconnect()
