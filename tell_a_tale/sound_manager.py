@@ -1,5 +1,5 @@
 from persisten_client import PersistentMPDClient
-import asyncio
+from time import sleep
 
 class SoundManager(object):
     def __init__(self):
@@ -13,7 +13,7 @@ class SoundManager(object):
         self.client.consume(0)
         #playlist
         self.loadPlaylist('queue1')
-            
+
     def loadPlaylist(self, playlist):
         print('[LOAD PLAYLIST] clear')
         self.client.clear()
@@ -22,27 +22,29 @@ class SoundManager(object):
         print('[LOAD PLAYLIST] shuffle')
         self.client.shuffle()
 
-    def status(self):                   
+    def status(self):
         return self.client.status()
-    
-    async def poller(self):
-        print("Hello World!")
+
+    def isStatePlay(self):
+        try: 
+            return self.client.status()['state'] == 'play'
+        except:
+            print ("[IS STATE PLAY] This ain't good but it won't hurt")
 
     def nextRandomSong(self):
         print('[NEXT RANDOM SONG]')
-        loop = asyncio.get_event_loop()
-        # Blocking call which returns when the hello_world() coroutine is done
-        loop.run_until_complete(self.poller())
-        loop.close()
 
-        self.poller()
-        if self.status()['state'] == 'play':
-            print('status is play next!')
+        if self.isStatePlay():
+            print('[NEXT RANDOM SONG] state is play execute next()')
             self.client.repeat(1)
             self.client.next()
+            sleep(1);
             self.client.repeat(0)
             return
+        print('[NEXT RANDOM SONG] state is NOT play execute play()')
         self.client.play()
+        sleep(1);
 
     def __del__(self):
         self.client.disconnect()
+        # self.loop.close()

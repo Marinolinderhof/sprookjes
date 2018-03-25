@@ -3,29 +3,18 @@ from gpiozero import Button, RGBLED, Device
 from signal import pause
 from sound_manager import SoundManager
 from time import sleep
+import asyncio
+
 
 GPIO_PLAY = Button(21)
 RGB_LED = RGBLED(17,18,27)
 
 def play_story(sound_manager):
-    print("tell a story")
+    print("[PLAY EVENT]")
     sound_manager.nextRandomSong()
 
 def stop(sound_manager):
     print("stop")
-
-
-def toggle_red_led(status=None):
-    # Because of NAND ON == OFF
-    if status == "on":
-        LED_RED.off()
-        return
-
-    if status == "off":
-        LED_RED.on()
-        return
-    
-    LED_RED.toggle();  
 
 
 def volume_down(sound_manager):
@@ -39,6 +28,32 @@ presses = {
 holds = {
     GPIO_PLAY: stop,
 }
+    
+
+async def buttons(mySoundManager):
+    while True:
+        for button, event in presses.items():
+            print("[BUTTONS] REGISTER")
+            button.when_pressed = partial(event, mySoundManager)
+            await asyncio.sleep(1)
+        await asyncio.sleep(10000)
+
+async def leds(mySoundManager):
+    prevState = True
+
+    while True:
+        try: 
+            print("[LED] status is %s" % mySoundManager.isStatePlay() )
+            if(mySoundManager.isStatePlay() and prevState != True): 
+                RGB_LED.blink( on_color=(1, 1, 0.2), off_color=(1, 0.2, 1), fade_in_time=2, fade_out_time=2, )
+            elif(mySoundManager.isStatePlay() == False and prevState != False): 
+                print("[LED] currently not playing led is green")
+                RGB_LED.blink( on_color=(1, 1, 0), off_color=(1, 0.1, 0), fade_in_time=2, fade_out_time=2, )
+            prevState = mySoundManager.isStatePlay();
+            await asyncio.sleep(1)
+        except:
+            print ("[LED] This ain't good but it will restart it self after 2sec")
+            await asyncio.sleep(2)
 
 
 def main():
@@ -55,17 +70,20 @@ def main():
     # LED_BLUE.off()
     # LED_RED.off()
 
+
+    # RGB_LED.blink( on_color=(0, 0, .1), off_color=(1, 0, 0), fade_in_time=2, fade_out_time=2, )
+
+
+
+
     print("[MAIN] creating soundmanager")
     mySoundManager = SoundManager()
-    print("[MAIN] status soundmanager")
-    print (mySoundManager.status())
-    RGB_LED.blink( on_color=(0, 0, .1), off_color=(1, 0, 0), fade_in_time=2, fade_out_time=2, )
-
-    print("[MAIN] Waiting for button press")
-    while True:
-        for button, event in presses.items():
-            button.when_pressed = partial(event, mySoundManager)
-        pause()
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(asyncio.gather(
+        leds(mySoundManager),
+        buttons(mySoundManager),
+    ))
+    loop.close()
 
 # Define a destroy function for clean up everything after
 # the script finished 
